@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="AutomationSuite" parallel="methods" thread-count="3">
+    <test name="LoginPageTests">
+        <classes>
+            <class name="com.aarushi.automation.ui.tests.StorePageTest"/>
+        </classes>
+    </test>
+</suite>
