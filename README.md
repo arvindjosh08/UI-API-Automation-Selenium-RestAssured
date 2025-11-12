@@ -82,8 +82,8 @@ TestAutomationFramework/
 
 
 ## Prerequisites
-- [Java 20]
-- [Maven 3.9.11]
+- [Java 20] (https://www.oracle.com/au/java/technologies/downloads/)
+- [Maven 3.9.11] (https://maven.apache.org/download.cgi)
 - Internet access for downloading dependencies
 - Chrome and Edge browsers are installed in your machine
 - No need to installed browser specific drivers as it is automatically handled through WebDriverManager
