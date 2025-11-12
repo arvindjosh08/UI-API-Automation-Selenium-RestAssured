@@ -50,6 +50,7 @@ public class DriverFactory {
         switch (browser.toLowerCase()) {
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--headless=new");
                 chromeOptions.addArguments("--start-maximized");
                 chromeOptions.addArguments("--no-sandbox");
                 chromeOptions.addArguments("--disable-dev-shm-usage");
