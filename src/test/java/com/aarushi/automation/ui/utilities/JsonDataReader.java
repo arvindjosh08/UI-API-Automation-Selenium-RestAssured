@@ -13,7 +13,7 @@ public static  <T> Object[][] readData(String jsonPath,Class<T> clazz) throws IO
 
     //Read file
 
-    File filePath = new File("src/test/resources/ui/testdata/logindata.json");
+    File filePath = new File(jsonPath);
     ObjectMapper mapper = new ObjectMapper();
     List<T> list = mapper.readValue(filePath, mapper.getTypeFactory().constructCollectionType(List.class, clazz));
 

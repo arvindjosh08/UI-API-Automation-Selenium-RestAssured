@@ -6,11 +6,13 @@ import com.aarushi.automation.ui.utilities.ScreenshotUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
+import org.openqa.selenium.bidi.browsingcontext.Locator;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.sql.Driver;
 import java.time.Duration;
+import java.util.List;
 
 
 public class ElementActions {
@@ -19,7 +21,7 @@ public class ElementActions {
     private int defaultTimeout;
     private static final Logger log = LogManager.getLogger(ElementActions.class);
 
-    public ElementActions() {
+    public ElementActions(WebDriver driver) {
         this.driver = DriverFactory.getDriver();
         this.defaultTimeout = getTimeoutFromConfig();
     }
@@ -47,6 +49,20 @@ public class ElementActions {
     }
 
     /**
+     * Get list of web elements safely
+     */
+    public List<WebElement> safelyFindElements(By locator) {
+        return new WebDriverWait(driver, Duration.ofSeconds(defaultTimeout)).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+    }
+
+    /**
+     * Get web elements safely
+     */
+    public WebElement safelyFindElement(By locator) {
+        return new WebDriverWait(driver, Duration.ofSeconds(defaultTimeout)).until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    /**
      * Clicks on element with default timeout
      */
     public void click(WebElement element, String elementName) {
@@ -60,31 +76,75 @@ public class ElementActions {
         try {
             getWait(timeoutInSeconds).until(ExpectedConditions.elementToBeClickable(element)).click();
             //ExtentLogger.pass("Clicked on: " + elementName);
+            log.info("Clicked on element: "+elementName);
+
         } catch (ElementClickInterceptedException e) {
             //ExtentLogger.warning("Standard click failed on: " + elementName + ". Trying JS click.");
             jsClick(element, elementName);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             handleFailure("Click failed on: " + elementName, e);
         }
     }
 
     /**
-     * Send keys with default timeout
+     * Clicks on element with custom timeout and locator as method parameter
+     */
+    public void click(By locator, String elementName, int timeoutInSeconds) {
+        try {
+            getWait(timeoutInSeconds).until(ExpectedConditions.elementToBeClickable(locator)).click();
+            log.info("Clicked on element: "+elementName);
+            //ExtentLogger.pass("Clicked on: " + elementName);
+        } catch (ElementClickInterceptedException e) {
+            //ExtentLogger.warning("Standard click failed on: " + elementName + ". Trying JS click.");
+            WebElement element=driver.findElement(locator);
+            jsClick(element, elementName);
+        }  catch (StaleElementReferenceException e){
+            driver.findElement(locator).click();
+        }
+        catch (Exception e) {
+            handleFailure("Click failed on: " + elementName, e);
+        }
+    }
+
+    /**
+     * Send keys with default timeout and web element parameter
      */
     public void sendKeys(WebElement element, String text, String elementName) {
         sendKeys(element, text, elementName, defaultTimeout);
     }
 
     /**
-     * Send keys with custom timeout
+     * Send keys with web element parameter
      */
     public void sendKeys(WebElement element, String text, String elementName, int timeoutInSeconds) {
         try {
             WebElement el = getWait(timeoutInSeconds).until(ExpectedConditions.visibilityOf(element));
             el.clear();
             el.sendKeys(text);
+            log.info("Entered text "+ text +" into "+elementName);
             //ExtentLogger.pass("Entered text '" + text + "' in: " + elementName);
         } catch (Exception e) {
+            handleFailure("Failed to send text to: " + elementName, e);
+        }
+    }
+
+    /**
+     * Send keys with locator parameter
+     */
+    public void sendKeys(By locator, String text, String elementName, int timeoutInSeconds) {
+        try {
+            WebDriverWait wait= new WebDriverWait(driver,Duration.ofSeconds(timeoutInSeconds));
+            WebElement returnElement=wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(locator)));
+            returnElement.clear();
+            returnElement.sendKeys(text);
+            log.info("Entered text "+ text +" into "+elementName);
+            //ExtentLogger.pass("Entered text '" + text + "' in: " + elementName);
+        }
+        catch (StaleElementReferenceException e){
+            driver.findElement(locator).sendKeys(text);
+        }
+        catch (Exception e) {
             handleFailure("Failed to send text to: " + elementName, e);
         }
     }
@@ -102,9 +162,25 @@ public class ElementActions {
     public String getText(WebElement element, String elementName, int timeoutInSeconds) {
         try {
             String text = getWait(timeoutInSeconds).until(ExpectedConditions.visibilityOf(element)).getText();
+            log.info("Fetched text from " + elementName+ " : "+text);
             //ExtentLogger.pass("Fetched text from: " + elementName + " => " + text);
             return text;
         } catch (Exception e) {
+            handleFailure("Failed to get text from: " + elementName, e);
+            return "";
+        }
+    }
+
+    public String getText(By locator, String elementName) {
+        try {
+            String text = getWait(defaultTimeout).until(ExpectedConditions.visibilityOfElementLocated(locator)).getText();
+            //ExtentLogger.pass("Fetched text from: " + elementName + " => " + text);
+            log.info("Fetched text from " + elementName+ " : "+text);
+            return text;
+        } catch (StaleElementReferenceException e) {
+           return driver.findElement(locator).getText();
+        }
+        catch (Exception e){
             handleFailure("Failed to get text from: " + elementName, e);
             return "";
         }
@@ -138,24 +214,7 @@ public class ElementActions {
     }
 
     /**
-     * Retry click with custom timeout
-     */
-    public void safeClick(WebElement element, String elementName, int retryCount) {
-        int attempts = 0;
-        while (attempts < retryCount) {
-            try {
-                click(element, elementName);
-                return;
-            } catch (Exception e) {
-                //ExtentLogger.warning("Retrying click on: " + elementName + " | Attempt: " + (attempts + 1));
-            }
-            attempts++;
-        }
-        handleFailure("All retry attempts failed for: " + elementName, null);
-    }
-
-    /**
-     * Failure handler
+     * Failure Handler
      */
     private void handleFailure(String message, Exception e) {
         //ExtentLogger.fail(message);

@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
-    <!-- ============================= -->
-    <!-- Dynamic log folder properties -->
-    <!-- ============================= -->
+<Configuration status="WARN" monitorInterval="60">
+    <!--
+        status="WARN" → Log4j internal logging level.
+        monitorInterval="60" → Reload config every 60 seconds if changed.
+    -->
+
     <Properties>
-        <!-- Base log folder relative to project root -->
-        <Property name="LOG_BASE">${sys:log.folder}</Property>
-        <!-- Timestamped folder per run for CI/CD and parallel execution -->
-        <Property name="LOG_FOLDER">${LOG_BASE}/${date:yyyyMMdd_HHmmss}</Property>
+        <!-- Directory where log files are stored -->
+        <Property name="LOG_DIR">target/logs</Property>
+        <!-- Common date format used in log file names -->
+        <!-- Layout pattern for each log entry -->
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
     </Properties>
 
-    <!-- ============================= -->
-    <!-- Appenders -->
-    <!-- ============================= -->
     <Appenders>
-        <!-- Console appender -->
+
+        <!-- Console output -->
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
 
         <!-- Rolling file appender -->
         <RollingFile name="FileLogger"
-                     fileName="${LOG_FOLDER}/framework.log"
-                     filePattern="${LOG_FOLDER}/framework-%d{yyyy-MM-dd}-%i.log.gz">
-            <PatternLayout>
-                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n</pattern>
-            </PatternLayout>
+                     fileName="${LOG_DIR}/framework.log"
+                     filePattern="${LOG_DIR}/framework-%d{yyyy-MM-dd-HH-mm}.log.gz">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
             <Policies>
-                <!-- Roll every day -->
+                <!-- Rotate daily -->
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-                <!-- Roll when file size exceeds 10 MB -->
-                <SizeBasedTriggeringPolicy size="10MB"/>
+                <!-- Rotate when file exceeds 10 MB -->
+                <SizeBasedTriggeringPolicy size="10 MB"/>
             </Policies>
+            <!-- Keep up to 10 compressed archives -->
+
         </RollingFile>
+
+        <!-- Optional: separate appender for error logs -->
     </Appenders>
 
-    <!-- ============================= -->
-    <!-- Loggers -->
-    <!-- ============================= -->
     <Loggers>
-        <!-- Root logger -->
+        <!-- Framework-wide logger (example package) -->
+        <Logger name="com.aarushi.automation.ui" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="FileLogger"/>
+        </Logger>
+
+        <!-- Default root logger -->
         <Root level="info">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="FileLogger"/>
         </Root>
-
-        <!-- Framework-specific logger for debug messages -->
-        <Logger name="com.company.framework" level="debug" additivity="false">
-            <AppenderRef ref="Console"/>
-            <AppenderRef ref="FileLogger"/>
-        </Logger>
     </Loggers>
 </Configuration>

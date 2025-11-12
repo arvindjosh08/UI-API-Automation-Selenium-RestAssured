@@ -1,4 +1,8 @@
 package com.aarushi.automation.ui.utilities;
+import com.aarushi.automation.ui.base.BaseTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -8,6 +12,8 @@ public class ConfigReader {
 
     private static Properties properties = new Properties();
     private static boolean isLoaded = false;
+    protected static final Logger logger = LogManager.getLogger(ConfigReader.class);
+
 
     /**
      * Loads the configuration file based on the environment.
@@ -59,5 +65,12 @@ public class ConfigReader {
      */
     public static boolean getBoolean(String key) {
         return Boolean.parseBoolean(get(key));
+    }
+
+    public static String getDataFilePath(String fileName) {
+        String basePath = System.getProperty("user.dir");
+        System.out.println(basePath);
+        String environment = System.getProperty("environment", "sit").toLowerCase();
+        return Paths.get(basePath, "src", "test", "resources","ui", "testdata", environment, fileName).toString();
     }
 }

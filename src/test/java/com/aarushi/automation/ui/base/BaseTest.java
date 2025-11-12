@@ -2,15 +2,17 @@ package com.aarushi.automation.ui.base;
 
 import com.aarushi.automation.ui.listeners.ExtentTestNGListener;
 import com.aarushi.automation.ui.utilities.ConfigReader;
-import com.aarushi.automation.ui.utilities.RunContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
 
 @Listeners(ExtentTestNGListener.class)
-public class BaseClass {
+public class BaseTest
+{
 
-    //protected WebDriver driver;
-
+    protected WebDriver driver;
+    protected static final Logger logger = LogManager.getLogger(BaseTest.class);
     /**
      * Initializes the WebDriver before each test method.
      * Supports parallel execution using ThreadLocal driver.
@@ -19,8 +21,9 @@ public class BaseClass {
     public void setUp() {
 
         try {
-            DriverFactory.setDriver("chrome");
-            DriverFactory.getDriver();
+            String browser = System.getProperty("browser", "chrome").toLowerCase();
+            DriverFactory.setDriver(browser);
+            driver=DriverFactory.getDriver();
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize WebDriver: " + e.getMessage(), e);
@@ -42,14 +45,13 @@ public class BaseClass {
         } finally {
             // End test in Extent report
             //ExtentLogger.endTest();
-            //ExtentManager.flushReports();
+            //Extent.flushReports();
         }
     }
 
     @BeforeSuite(alwaysRun = true)
     public void beforeSuiteSetup() {
         ConfigReader.loadConfig();
-        RunContext.initialize();
     }
 
 }

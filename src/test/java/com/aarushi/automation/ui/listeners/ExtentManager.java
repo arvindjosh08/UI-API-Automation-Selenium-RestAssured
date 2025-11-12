@@ -4,6 +4,7 @@ import com.aarushi.automation.ui.utilities.RunContext;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import org.apache.commons.lang3.SystemProperties;
 
 public final class ExtentManager {
     private static ExtentReports extent;
@@ -13,7 +14,8 @@ public final class ExtentManager {
     public static synchronized ExtentReports getExtentReports() {
 
         if (extent == null) {
-            String reportPath = RunContext.getRunFolder() + "/TestReport.html";
+            String localDir=SystemProperties.getProperty("user.dir");
+            String reportPath = localDir+"/target"+"/Report.html";
             ExtentSparkReporter htmlReporter = new ExtentSparkReporter(reportPath);
             htmlReporter.config().setDocumentTitle("Automation Test Report");
             htmlReporter.config().setReportName("Regression Suite");
