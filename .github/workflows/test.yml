@@ -1,0 +1,21 @@
+name: UI Test Suite
+on: [push, pull_request]
+jobs:
+  selenium-tests:
+    runs-on: ubuntu-latest    # or windows-latest, macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Optionally set up Chrome explicitly (though Chrome may already be present)
+      - uses: browser-actions/setup-chrome@v2
+        with:
+          install-chromedriver: true
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build and run tests
+        run: mvn clean test
