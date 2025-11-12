@@ -46,14 +46,16 @@ public class DriverFactory {
      */
     private static WebDriver createDriverInstance(String browser) {
         WebDriver driverInstance;
-
+        boolean isHeadless = Boolean.parseBoolean(System.getProperty("headless", "false"));
         switch (browser.toLowerCase()) {
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.addArguments("--headless=new");
+                if (isHeadless) {
+                    chromeOptions.addArguments("--headless=new");
+                    chromeOptions.addArguments("--no-sandbox");
+                    chromeOptions.addArguments("--disable-dev-shm-usage");
+                }
                 chromeOptions.addArguments("--start-maximized");
-                chromeOptions.addArguments("--no-sandbox");
-                chromeOptions.addArguments("--disable-dev-shm-usage");
                 chromeOptions.addArguments("--disable-notifications");
                 chromeOptions.addArguments("--remote-allow-origins=*");
                 driverInstance = new ChromeDriver(chromeOptions);

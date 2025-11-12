@@ -219,7 +219,6 @@ public class ElementActions {
     private void handleFailure(String message, Exception e) {
         //ExtentLogger.fail(message);
         ScreenshotUtils.captureScreenshotBase64(message.replace(" ", "_"));
-
         throw new RuntimeException(message, e);
     }
 }

@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 public class ProductsTest extends BaseTest
 {
 
-        @Test
+    @Test(groups = "ui")
     public void verifySearchProductsFunctionality()
     {
         logger.info("*******STARTING -  VerifySearchProductsFunctionality test");

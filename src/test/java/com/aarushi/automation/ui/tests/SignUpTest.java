@@ -16,7 +16,7 @@ import java.time.Duration;
 
 public class SignUpTest extends BaseTest
     {
-        @Test(groups ="ui",dataProvider = "signup", dataProviderClass = TestDataProvider.class)
+        @Test(dataProvider = "signup", dataProviderClass = TestDataProvider.class, groups = "sign")
         public  void verifySignUpAndDeleteFunctionality(SignUpModel signUpModel)
         {
             logger.info("*******STARTING -  VerifySignUpAndDeleteFunctionality test");

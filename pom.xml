@@ -62,8 +62,32 @@
         <plugins>
             <!-- Add your Maven plugins here -->
             <!-- Example: Maven Clean Plugin to remove old logs -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <!-- Use TestNG -->
+                    <suiteXmlFiles></suiteXmlFiles>
+                    <properties>
+                        <property>
+                            <name>parallel</name>
+                            <!--suppress UnresolvedMavenProperty -->
+                            <value>${parallel}</value>
+                        </property>
+                        <property>
+                            <name>threadCount</name>
+                            <!--suppress UnresolvedMavenProperty -->
+                            <value>${threadCount}</value>
+                        </property>
+                    </properties>
+                    <!-- Default: do NOT run in parallel -->
+                    <systemPropertyVariables>
+                        <parallel>none</parallel>
+                        <threadCount>1</threadCount>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
-
 </project>
