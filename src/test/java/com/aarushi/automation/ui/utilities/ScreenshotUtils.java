@@ -28,27 +28,4 @@ public class ScreenshotUtils {
     }
 
 
-    public static String captureScreenshot(String testName) {
-        WebDriver driver=DriverFactory.getDriver();
-        String screenshotDir = RunContext.getScreenshotsDir();
-        // Unique filename using timestamp + thread id
-        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSS").format(new Date());
-        String threadId = String.valueOf(Thread.currentThread().getId());
-        String fileName = testName + "_T" + threadId + "_" + timestamp + ".png";
-
-        String filePath = screenshotDir + File.separator + fileName;
-        System.out.println(filePath);
-
-        // Capture and save screenshot
-        File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        try {
-            Files.copy(srcFile.toPath(), new File(filePath).toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return filePath;
-    }
-
-
 }
