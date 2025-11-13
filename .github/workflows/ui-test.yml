@@ -20,3 +20,11 @@ jobs:
 
       - name: Build and run tests
         run: mvn clean test -Dheadless=true -Dparallel=methods -DthreadCount=3
+
+      - name: Upload Test Logs
+        uses: actions/upload-artifact@v3
+        with:
+              name: test-logs
+              path: |
+                target/logs/**
+                target/Report.html
