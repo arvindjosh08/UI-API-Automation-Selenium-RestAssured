@@ -1,0 +1,19 @@
+name: API Test Suite
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest    # or windows-latest, macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build and run tests
+        run: mvn clean test -Dtest="com.aarushi.automation.api.**" -Dparallel

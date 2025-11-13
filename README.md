@@ -122,6 +122,10 @@ mvn clean test -Dtest="com.aarushi.automation.ui.**" -Dheadless=true
 
 ```
 
+## Running test in GitHub CI servers
+- There are two .yml files inside .github\workflows. api-test.yml file is to run api test and ui-test.yml file is to run ui tests
+
+
 ## Logging
 - Logging is handled by Log4j2.
 - Logs are written to: /target/logs/framework.log

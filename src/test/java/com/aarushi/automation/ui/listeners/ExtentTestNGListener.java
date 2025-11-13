@@ -14,7 +14,6 @@ public class ExtentTestNGListener implements ITestListener {
 
     private static final Logger logger = LogManager.getLogger(ExtentTestNGListener.class);
 
-
     @Override
     public void onTestStart(ITestResult result) {
         ExtentTestManager.createTest(result.getMethod().getMethodName(), result.getMethod().getDescription());

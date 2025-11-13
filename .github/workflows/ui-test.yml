@@ -21,4 +21,4 @@ jobs:
           distribution: 'temurin'
 
       - name: Build and run tests
-        run: mvn clean test -Dheadless=true
+        run: mvn clean test -Dheadless=true -Dparallel=methods -DthreadCount=3
