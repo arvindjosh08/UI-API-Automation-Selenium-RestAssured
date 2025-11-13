@@ -1,7 +1,5 @@
 name: UI Test Suite
 on:
-  push:
-  pull_request:
   workflow_dispatch:
 jobs:
   selenium-tests:
