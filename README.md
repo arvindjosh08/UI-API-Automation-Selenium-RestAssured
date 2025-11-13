@@ -79,6 +79,7 @@ TestAutomationFramework/
 - JSON schema validation for API schema validation
 - API request and response DTO's to handle complex json responses by deserializing the API response to POJO objects
 - UI and API components are in separate package which makes the framework scalable and we can add another package in future for mobile testing using appium and keep shared code in common package.
+- Running test in CI server using GitHubActions workflow
 
 
 ## Prerequisites
