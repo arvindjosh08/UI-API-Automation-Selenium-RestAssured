@@ -14,7 +14,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build and run tests
-        run: mvn clean test -Dtest="com.aarushi.automation.api.**" -Dparallel=methods -DthreadCount=3
+        run: mvn clean test -pl api-automation -am -Dparallel=methods -DthreadCount=3
 
       - name: Upload Test Logs
         uses: actions/upload-artifact@v4
@@ -22,4 +22,4 @@ jobs:
               name: test-logs
               path: |
                 target/logs/**
-                target/Report.html
+                target/API_Test_Report.html

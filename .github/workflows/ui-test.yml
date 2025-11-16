@@ -19,7 +19,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build and run tests
-        run: mvn clean test -Dheadless=true -Dparallel=methods -DthreadCount=3
+        run: mvn clean test -pl api-automation -am -Dheadless=true -Dparallel=methods -DthreadCount=3
 
       - name: Upload Test Logs
         uses: actions/upload-artifact@v4
@@ -27,4 +27,4 @@ jobs:
               name: test-logs
               path: |
                 target/logs/**
-                target/Report.html
+                target/UI_Test_Report.html
