@@ -2,7 +2,7 @@
 <suite name="AutomationSuite" parallel="methods" thread-count="2">
     <test name="LoginPageTests">
         <classes>
-            <class name="com.aarushi.automation.ui.tests.SignUpTest"/>
+            <class name="com.aarushi.automation.tests.com.aarushi.automation.api.SignUpTest"/>
         </classes>
     </test>
 </suite>

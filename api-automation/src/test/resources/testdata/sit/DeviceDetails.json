@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Apple MacBook Pro 16",
+    "data": {
+      "year": 2019,
+      "price": 1849.99,
+      "CPU model": "Intel Core i9",
+      "Hard disk size": "1 TB"
+    }
+  },
+  {
+    "name": "Google Pixel 7 pro",
+    "data": {
+      "year": 2025,
+      "price": 395.99,
+      "CPU model": "Mac intel i9",
+      "Hard disk size": "128 TB"
+    }
+  }
+]
