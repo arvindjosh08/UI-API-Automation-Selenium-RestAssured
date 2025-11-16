@@ -16,10 +16,10 @@ jobs:
       - name: Build and run tests
         run: mvn clean test -pl api-automation -am -Dparallel=methods -DthreadCount=3
 
-      - name: Upload UI Test Logs
+      - name: Upload API Test Logs
         uses: actions/upload-artifact@v4
         with:
          name: api-test-logs
          path: |
-           ui-automation/target/logs/**
-           ui-automation/target/API_Test_Report.html
+           api-automation/target/logs/**
+           api-automation/target/API_Test_Report.html
