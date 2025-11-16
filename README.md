@@ -1,6 +1,6 @@
 # Test Automation Framework
 
-This is an enterprise-grade test automation framework built using **Selenium WebDriver**, **Rest Assired**, **TestNG**, **Extent Report** and **Log4j2** in **Java**. It supports both **UI** and **API** automation, parallel execution and logging
+This is an enterprise-grade test automation framework built using **Selenium WebDriver**, **Rest Assured**, **TestNG**, **Extent Report** and **Log4j2** in **Java**. It supports both **UI** and **API** automation, parallel execution and logging
 
 ---
 
@@ -126,17 +126,14 @@ mvn clean test -pl ui-automation -am
 6. Run only UI test in headless mode for CI run
 ```bash
  mvn clean test -pl ui-automation -am -Dbrowser=edge -Dheadless=true
- 
 ```
 7. Run only API test
 ```bash
  mvn clean test -pl api-automation -am
- 
 ```
 8. Run only API test in parallel
 ```bash
  mvn clean test -pl api-automation -am -Dparallel=methods -DthreadCount=3
- 
 ```
 
 ## Running test in GitHub CI servers
