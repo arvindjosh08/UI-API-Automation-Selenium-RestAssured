@@ -22,10 +22,9 @@ jobs:
         run: mvn clean test -pl api-automation -am -Dheadless=true -Dparallel=methods -DthreadCount=3
 
       - name: Upload UI Test Logs
-        working-directory: ui-automation
         uses: actions/upload-artifact@v4
         with:
           name: ui-test-logs
           path: |
-            target/logs/**
-            target/Report.html
+            ui-automation/target/logs/**
+            ui-automation/target/UI_Test_Report.html
